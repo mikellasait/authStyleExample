@@ -1,17 +1,20 @@
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {COLORS, SIZES, FONTS, images, icons, constants} from '../../constants';
 import {IconTextButton, TextButton, Authmodal} from '../../components';
 import {MotiView, useAnimationState} from 'moti';
 
-const Welcome = () => {
+const Welcome = ({navigation}) => {
+  const [selectedScreen, setSelectedScreen] = useState('');
+
   const bottomSheetModalRef = useRef(null);
 
   const showModal = useCallback(screen => {
+    setSelectedScreen(screen);
     bottomSheetModalRef.current.present();
   }, []);
 
-  const hideModal = useCallback(screen => {
+  const hideModal = useCallback(() => {
     scaleAnimationState.transitionTo('normal');
     bottomSheetModalRef.current.dismiss();
   }, []);
@@ -28,7 +31,12 @@ const Welcome = () => {
 
   useEffect(() => {
     scaleAnimationState.transitionTo('normal');
+    navigation.navigate('Otp');
   }, []);
+
+  function onRegister() {
+    hideModal();
+  }
 
   function renderHeaderImage() {
     return (
@@ -102,7 +110,9 @@ const Welcome = () => {
           <TextButton
             label={'Create an Account'}
             contentContainerStyle={{marginTop: SIZES.padding}}
-            onPress={null}
+            onPress={() => {
+              showModal(constants.register);
+            }}
           />
         </View>
       </View>
@@ -119,6 +129,9 @@ const Welcome = () => {
         <Authmodal
           bottomSheetModalRef={bottomSheetModalRef}
           hideModal={hideModal}
+          selectedScreen={selectedScreen}
+          setSelectedScreen={setSelectedScreen}
+          onRegister={onRegister}
         />
       </MotiView>
     </View>

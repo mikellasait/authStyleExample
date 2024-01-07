@@ -1,10 +1,10 @@
 import {View, Text, Image} from 'react-native';
 import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {COLORS, FONTS, SIZES, constants, icons} from '../../constants';
 import {CheckBox, FormInput, IconButton, TextButton} from '../../components';
 
-const Login = () => {
+const Login = ({setSelectedScreen}) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -67,7 +67,7 @@ const Login = () => {
             labelStyle={{
               color: COLORS.primary400,
             }}
-            onPress={null}
+            onPress={() => setSelectedScreen(constants.register)}
           />
         </View>
         <TextButton
