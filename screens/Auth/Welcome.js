@@ -1,7 +1,8 @@
-import {useCallback, useRef} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {View, Text, Image} from 'react-native';
 import {COLORS, SIZES, FONTS, images, icons, constants} from '../../constants';
 import {IconTextButton, TextButton, Authmodal} from '../../components';
+import {MotiView, useAnimationState} from 'moti';
 
 const Welcome = () => {
   const bottomSheetModalRef = useRef(null);
@@ -11,7 +12,22 @@ const Welcome = () => {
   }, []);
 
   const hideModal = useCallback(screen => {
+    scaleAnimationState.transitionTo('normal');
     bottomSheetModalRef.current.dismiss();
+  }, []);
+
+  const scaleAnimationState = useAnimationState({
+    normal: {
+      transform: [{scale: 1}],
+    },
+    scaleDown: {
+      transform: [{scale: 0.9}],
+      borderRadius: 20,
+    },
+  });
+
+  useEffect(() => {
+    scaleAnimationState.transitionTo('normal');
   }, []);
 
   function renderHeaderImage() {
@@ -42,7 +58,12 @@ const Welcome = () => {
               borderColor: COLORS.primary500,
               backgroundColor: COLORS.primary500,
             }}
-            onPress={() => showModal(constants.login)}
+            onPress={() => {
+              setTimeout(() => {
+                scaleAnimationState.transitionTo('scaleDown');
+              }, 100);
+              showModal(constants.login);
+            }}
           />
           <IconTextButton
             icon={icons.apple_logo}
@@ -90,7 +111,8 @@ const Welcome = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.gray400}}>
-      <View
+      <MotiView
+        state={scaleAnimationState}
         style={{flex: 1, overflow: 'hidden', backgroundColor: COLORS.gray900}}>
         {renderHeaderImage()}
         {renderLoginDetails()}
@@ -98,7 +120,7 @@ const Welcome = () => {
           bottomSheetModalRef={bottomSheetModalRef}
           hideModal={hideModal}
         />
-      </View>
+      </MotiView>
     </View>
   );
 };

@@ -17,7 +17,7 @@ function App() {
             screenOptions={{
               headerShown: false,
             }}
-            initialRouteName="Onboarding">
+            initialRouteName="Welcome">
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Stack.Screen name="Welcome" component={Welcome} />
           </Stack.Navigator>

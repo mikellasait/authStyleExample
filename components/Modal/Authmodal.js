@@ -3,15 +3,10 @@ import React, {useCallback, useMemo} from 'react';
 import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {COLORS, SIZES, icons} from '../../constants';
 import {IconButton} from '..';
+import {Login} from '../../screens';
 
 const Authmodal = ({bottomSheetModalRef, hideModal}) => {
-  const snapPoint = useMemo(() => {
-    if (Platform.OS === 'ios') {
-      return ['93%'];
-    } else {
-      return ['90%'];
-    }
-  });
+  const snapPoint = useMemo(() => ['95%'], []);
 
   const renderBackdrop = useCallback(props => (
     <BottomSheetBackdrop
@@ -27,7 +22,10 @@ const Authmodal = ({bottomSheetModalRef, hideModal}) => {
     return (
       <View>
         <View>
-          <IconButton icon={icons.angle_arrow_left} />
+          <IconButton
+            icon={icons.angle_arrow_left}
+            onPress={() => hideModal()}
+          />
         </View>
       </View>
     );
@@ -53,6 +51,7 @@ const Authmodal = ({bottomSheetModalRef, hideModal}) => {
           backgroundColor: COLORS.backgroundPrimary,
         }}>
         {renderHeader()}
+        <Login />
       </View>
     </BottomSheetModal>
   );
